@@ -2,14 +2,14 @@
   <div class="room-entry">
 
     <label for="roomCode">10 Digit Room Code:</label>
-    <input id="roomCode" type="text" v-model="roomIdInput">
+    <input id="roomCode" type="text" v-model="roomIdInput" @keyup.enter="enterRoom">
 
     <button class="btn btn-lg" @click="enterRoom">Join Room</button>
 
     <br/>
 
     <label for="roomName">Room Name:</label>
-    <input id="roomName" type="text" v-model="nameInput">
+    <input id="roomName" type="text" v-model="nameInput" @keyup.enter="createRoom">
 
     <button class="btn btn-lg" @click="createRoom">Create Room</button>
 

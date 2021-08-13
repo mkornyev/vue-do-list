@@ -7,7 +7,7 @@
     </div>
 
     <div v-else>
-      <ToDoList :room="room" @addToDo="addToDo"/>
+      <ToDoList :room="room" @addToDo="addToDo" @removeToDo="removeToDo"/>
     </div>
   </div>
 </template>
@@ -46,7 +46,7 @@ export default defineComponent({
   data() {
     return {
       header: 'Welcome to the Vue-Do list!',
-      taglines: ['To get started, join or create a room below.'],
+      taglines: ['A live collaborative todo tool.', 'To get started, join or create a room below.'],
       room: null,
     }
   },
@@ -58,10 +58,22 @@ export default defineComponent({
       this.header = this.room.name
       this.taglines = [`Room ID: ${this.room.id}`]
     },
+
     addToDo(todo: ToDoItem) {
       if(this.room) {
         this.room.todos.push(todo)
       }
+    },
+
+    removeToDo(todoPriority: Number) {
+      let newToDos = this.room.todos.filter((todo: ToDoItem) => {
+        return todo.priority != todoPriority
+      })
+      var index = -1
+      this.room.todos = newToDos.map((todo: ToDoItem) => {
+        index += 1
+        return { priority: index, value: todo.value, hexColor: todo.hexColor }
+      })
     }
   },
 });

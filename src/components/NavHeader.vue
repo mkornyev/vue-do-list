@@ -29,10 +29,13 @@
     font-size: 3em;
     margin-left: 10%;
     margin-right: 10%;
+    margin-bottom: 0px;
   }
 
   p.tagline {
     font-size: 1.5em;
+    margin-top: 0px;
+    margin-bottom: 2%;
   }
 
   hr {

@@ -1,26 +1,68 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <NavHeader :header="header" :taglines="taglines"/>
+
+    <div v-if="room === null">
+      <RoomEntryForm @loadRoom="loadToDoRoom"/>
+    </div>
+
+    <div v-else>
+      <ToDoList :room="room" @addToDo="addToDo"/>
+    </div>
+  </div>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+<script lang="ts">
+// IMPORTS 
+import { defineComponent } from 'vue';
+import NavHeader from './components/NavHeader.vue'
+import RoomEntryForm from './components/RoomEntryForm.vue'
+import ToDoList from './components/ToDoList.vue'
+import './App.css'
 
-export default {
+
+// INTERFACES 
+interface ToDoItem {
+  priority: Number,
+  value: String, 
+  hexColor: String,
+}
+
+interface Room {
+  id: String,
+  name: String,
+  todos: [ToDoItem?],
+}
+
+
+// COMPONENT
+export default defineComponent({
   name: 'App',
   components: {
-    HelloWorld
-  }
-}
-</script>
+    NavHeader, 
+    RoomEntryForm,
+    ToDoList,
+  },
+  data() {
+    return {
+      header: 'Welcome to the Vue-Do list!',
+      taglines: ['To get started, join or create a room below.'],
+      room: null,
+    }
+  },
+  methods: {
+    loadToDoRoom(room: Room) {
+      console.log(`Loading room #${room.id}, ${room.name}`)
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+      this.room = room
+      this.header = this.room.name
+      this.taglines = [`Room ID: ${this.room.id}`]
+    },
+    addToDo(todo: ToDoItem) {
+      if(this.room) {
+        this.room.todos.push(todo)
+      }
+    }
+  },
+});
+</script>
